@@ -18,7 +18,7 @@ def extract_md_files(input_dir: str, output_dir:str) -> None:
 def process_documents(filter_docs: List[str],
                       source_folder: str,
                       output_folder: str,
-                      remove_after_params: list) -> None:
+                      remove_after_params: dict) -> None:
     """
     Processes markdown files in the given folder, cleans and extracts Polish text,
     and saves the output to a specified destination.
@@ -27,6 +27,7 @@ def process_documents(filter_docs: List[str],
     - filter_docs: List of dictionaries, each with 'year', 'pos', and 'title' keys.
     - source_folder: Folder containing the markdown files to process.
     - output_folder: Folder where processed files will be saved.
+    - remove_after_params: patterns to filter out - default_ending, start_pattern, signature_patterns
     """
 
     # This part is creating a dictionary where the keys are file names
