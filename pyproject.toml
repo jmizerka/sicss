@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rag"
+version = "0.1.0"
+description = "Package for rag workshop"
+authors = [
+    { name = "Jan Mizerka" }
+]
+dependencies = [
+    "requests",
+    "langdetect",
+    "tqdm",
+    "IPython",
+    "ipywidgets",
+    "rapidfuzz",
+    "faiss-cpu",
+    "sentence-transformers",
+    "numpy",
+    "transformers",
+    "bitsandbytes"
+]
+urls = { homepage = "https://github.com/jmizerka/rag" }
+
+[tool.setuptools.packages.find]
+where = ["."]
