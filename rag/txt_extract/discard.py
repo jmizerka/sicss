@@ -32,9 +32,9 @@ def remove_after(content: str,
     This function cleans up texts by removing any unwanted text
     that may have been added after the main content — like footers, unrelated laws,
     or repeated signatures. It tries a few methods:
-    - polish laws often end with a phrase "wchodzi w życie"
-    - polish legal acts often start with type of a document
-    - polish legal acts often end with a signature of the issuing person/authority
+    - looks for common ending phrase such as "wchodzi w życie"
+    - looks for types of documents because polish legal acts often start with type of a document, then title
+    - looks for signatures of the issuing persons/authorities
     """
     # Step 1: Check if the phrase 'wchodzi w życie' appears in the text.
     # This phrase usually signals the final sentence of a Polish legal act ("comes into force").
