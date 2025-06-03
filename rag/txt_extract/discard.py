@@ -26,7 +26,8 @@ def remove_before(content: str, title: str, threshold = 90):
     return content
 
 
-def remove_after(content: str, default_ending: str, start_pattern: str, signature_patterns: str) -> str:
+def remove_after(content: str,
+                 params: dict) -> str:
     """
     This function cleans up texts by removing any unwanted text
     that may have been added after the main content — like footers, unrelated laws,
@@ -37,6 +38,10 @@ def remove_after(content: str, default_ending: str, start_pattern: str, signatur
     """
     # Step 1: Check if the phrase 'wchodzi w życie' appears in the text.
     # This phrase usually signals the final sentence of a Polish legal act ("comes into force").
+    default_ending = params.get('default_ending')
+    start_pattern: str = params.get('start_pattern')
+    signature_patterns: str = params.get('signature_patterns')
+
     if default_ending in content: #wchodzi w życie
         # Find the last occurrence of the phrase in the document
         end_position = content.rfind(default_ending)
@@ -61,12 +66,7 @@ def remove_after(content: str, default_ending: str, start_pattern: str, signatur
     # Step 3: If neither of the above checks worked, look for official signatures.
     # These signatures usually appear at the end of a legal document,
     # so anything after them is likely unnecessary.
-    # signature_patterns = [
-    #     r'Prezes Rady Ministr[oó]w:', # Prime Minister
-    #     r'Minister [A-ZĄĆĘŁŃÓŚŹŻa-ząćęłńóśźż\s]+:', # Any Minister
-    #     r'Prezydent Rzeczypospolitej Polskiej:', # President of Poland
-    #     r'Marsza[łl]ek (?:Sejmu|Senatu):' # Marshal of the Sejm/Senate
-    # ]
+
 
     for pattern in signature_patterns:
         match = re.search(pattern, content)
@@ -84,7 +84,7 @@ def strip_markdown(text: str) -> str:
     """
     remove Markdown formatting, preserve only text
     """
-    text = re.sub(r'!\[.*?\]\(.*?\)', '', text)  # images
+    text = re.sub(r'!\[.*?]\(.*?\)', '', text)  # images
     text = re.sub(r'\[.*?\]\(.*?\)', '', text)   # links
     text = re.sub(r'>\s?', '', text)             # quotes
     text = re.sub(r'#+\s?', '', text)            # headers

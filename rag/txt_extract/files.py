@@ -15,7 +15,10 @@ def extract_md_files(input_dir: str, output_dir:str) -> None:
             shutil.move(md_path, f'{output_dir}/{file.name}.md')
 
 
-def process_documents(filter_docs: List[str], source_folder: str, output_folder: str) -> None:
+def process_documents(filter_docs: List[str],
+                      source_folder: str,
+                      output_folder: str,
+                      remove_after_params: list) -> None:
     """
     Processes markdown files in the given folder, cleans and extracts Polish text,
     and saves the output to a specified destination.
