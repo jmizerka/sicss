@@ -11,7 +11,8 @@ def process_document(file_path: str, metadata: dict, engine: str = "libre") -> L
         text = f.read()
 
     # Split the text into sections based on legal section markers
-    sections = chunk_by_sections(text)
+    sections_patterns = [r'(Article\s+\d+)', r'(Art\.\s*\d+)', r'(§+\s*\d+)']
+    sections = chunk_by_sections(text, sections_patterns)
 
     # If no sections were found, fall back to character-based chunking
     section_based = True
