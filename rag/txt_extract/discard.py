@@ -19,11 +19,11 @@ def remove_before(content: List[str], title: str, threshold = 90):
         score = fuzz.partial_ratio(line.lower(), cleaned_title.lower())
         if score >= threshold:
             # Found the likely start — slice from the next line
-            content_str = '\n'.join(content[idx + 1:])
+            content_str = ''.join(content[idx + 1:])
             # Prepend the official title
             return f"{title}\n{content_str}"
     # If no matching title found, return the content unchanged
-    return '\n'.join(content)
+    return ''.join(content)
 
 
 def remove_after(content: str,
