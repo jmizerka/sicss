@@ -18,7 +18,8 @@ def extract_md_files(input_dir: str, output_dir:str) -> None:
 def process_documents(filter_docs: List[str],
                       source_folder: str,
                       output_folder: str,
-                      remove_after_params: dict) -> None:
+                      remove_after_params: dict,
+                     keep_tables=True) -> None:
     """
     Processes markdown files in the given folder, cleans and extracts Polish text,
     and saves the output to a specified destination.
@@ -47,12 +48,14 @@ def process_documents(filter_docs: List[str],
         title = titles[file.name]
         text = remove_before(text, title)
         text = remove_after(text, remove_after_params)
-        tables = detect_markdown_table(text)
 
-        for i, table_idx in enumerate(tables):
-            table = text[table_idx[0]:table_idx[1]]
-            csv_table = markdown_table_to_csv(table)
-            text = text.replace(table, f'Tabela {i}. {csv_table}\n')
+        if not skip_tables:
+            tables = detect_markdown_table(text)
+    
+            for i, table_idx in enumerate(tables):
+                table = text[table_idx[0]:table_idx[1]]
+                csv_table = markdown_table_to_csv(table)
+                text = text.replace(table, f'Tabela {i}. {csv_table}\n')
 
         text = strip_markdown(text)
         # After processing the text, it is saved to a new file with the same name
