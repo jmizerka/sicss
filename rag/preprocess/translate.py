@@ -10,7 +10,7 @@ from IPython.display import display  # Show widgets in the notebook
 LIBRETRANSLATE_URL = "http://localhost:5000/translate"
 
 # Template for the Lingva API (translates from Polish to English)
-LINGVA_URL_TEMPLATE = "https://lingva.ml/api/v1/pl/en/{}"
+LINGVA_URL_TEMPLATE = "https://lingva.ml/api/v1/pl/en/'{}'"
 
 # Target language for translation
 TARGET_LANG = "en"
