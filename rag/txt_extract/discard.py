@@ -3,7 +3,7 @@ from rapidfuzz import fuzz
 from typing import List
 
 
-def remove_before(content: str, title: str, threshold = 90):
+def remove_before(content: List[str], title: str, threshold = 90):
     """
     Function to remove any unwanted content at the beginning of the text—such as fragments from other documents—
     that appear before the specified title.
@@ -23,7 +23,7 @@ def remove_before(content: str, title: str, threshold = 90):
             # Prepend the official title
             return f"{title}\n{content_str}"
     # If no matching title found, return the content unchanged
-    return content
+    return '\n'.join(content)
 
 
 def remove_after(content: str,
