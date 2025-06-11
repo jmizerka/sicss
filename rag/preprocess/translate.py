@@ -1,6 +1,7 @@
 import json
 import time
 import requests
+from urllib.parse import quote
 from tqdm import tqdm  # Shows a progress bar during translation
 import ipywidgets as widgets  # UI elements for Colab
 from IPython.display import display  # Show widgets in the notebook
@@ -9,7 +10,7 @@ from IPython.display import display  # Show widgets in the notebook
 LIBRETRANSLATE_URL = "http://localhost:5000/translate"
 
 # Template for the Lingva API (translates from Polish to English)
-LINGVA_URL_TEMPLATE = "https://lingva.ml/api/v1/pl/en/'{}'"
+LINGVA_URL_TEMPLATE = "https://lingva.ml/api/v1/pl/en/{}"
 
 # Target language for translation
 TARGET_LANG = "en"
@@ -46,7 +47,7 @@ def translate_with_lingva(text):
     This API does not require a key and is suitable for smaller jobs.
     """
     try:
-        url = LINGVA_URL_TEMPLATE.format(text)  # Safely encode the text
+        url = LINGVA_URL_TEMPLATE.format(quote(text))  # Safely encode the text
         response = requests.get(url)
         response.raise_for_status()
         return response.json().get("translation", "")
