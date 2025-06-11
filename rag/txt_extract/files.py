@@ -49,7 +49,7 @@ def process_documents(filter_docs: List[str],
         text = remove_before(text, title)
         text = remove_after(text, remove_after_params)
 
-        if not skip_tables:
+        if not keep_tables:
             tables = detect_markdown_table(text)
     
             for i, table_idx in enumerate(tables):
