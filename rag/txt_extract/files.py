@@ -46,7 +46,7 @@ def process_documents(filter_docs: List[str],
             text = f.read()
         title = titles[file.name]
         text = remove_before(text, title)
-        text = remove_after(text)
+        text = remove_after(text, remove_after_params)
         tables = detect_markdown_table(text)
 
         for i, table_idx in enumerate(tables):
