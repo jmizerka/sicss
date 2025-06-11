@@ -3,7 +3,7 @@ from typing import List, Dict
 from .chunk import chunk_by_sections, fallback_chunk
 from .translate import translate_text
 
-def process_document(file_path: str, metadata: dict, engine: str = "libre") -> List[Dict]:
+def process_document(file_path: str, metadata: dict, engine: str = "lingva") -> List[Dict]:
     """Process a single document and return a list of translated chunk dicts."""
 
     # Open and read the file content
