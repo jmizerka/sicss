@@ -2,7 +2,6 @@ import json
 import time
 import requests
 from tqdm import tqdm  # Shows a progress bar during translation
-from urllib.parse import quote  # Safely encode text in URLs
 import ipywidgets as widgets  # UI elements for Colab
 from IPython.display import display  # Show widgets in the notebook
 
@@ -47,7 +46,7 @@ def translate_with_lingva(text):
     This API does not require a key and is suitable for smaller jobs.
     """
     try:
-        url = LINGVA_URL_TEMPLATE.format(quote(text))  # Safely encode the text
+        url = LINGVA_URL_TEMPLATE.format(text)  # Safely encode the text
         response = requests.get(url)
         response.raise_for_status()
         return response.json().get("translation", "")
