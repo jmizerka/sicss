@@ -1,8 +1,14 @@
-from typing import List, Tuple
+from typing import List, Tuple, Union
 import numpy as np
 from sentence_transformers import SentenceTransformer
+from transformers import AutoModel, AutoTokenizer
+import torch
 
-def embed_texts(texts: List[str], model_name: str = 'all-MiniLM-L6-v2') -> Tuple[np.ndarray, SentenceTransformer]:
+
+def embed_texts(
+    texts: List[str],
+    mode: str = 'document'
+) -> Tuple[Union[np.ndarray, List[List[Tuple[str, np.ndarray]]]], Union[SentenceTransformer, AutoModel]]:
     """
     This function converts a list of text strings into numerical format (called embeddings),
     which makes it possible to compare the meaning of texts.
@@ -14,13 +20,36 @@ def embed_texts(texts: List[str], model_name: str = 'all-MiniLM-L6-v2') -> Tuple
     Returns:
     - An array of embeddings, each representing the meaning of a text input.
     """
-    model = load_embedding_model(model_name)
-    embeddings = model.encode(texts, convert_to_numpy=True)  # Convert texts into numerical vectors
-    return embeddings, model
+    if mode == 'document':
+        model = load_document_model()
+        embeddings = model.encode(texts, convert_to_numpy=True)
+        return embeddings, model
 
-def load_embedding_model(model_name: str = 'all-MiniLM-L6-v2') -> SentenceTransformer:
+    elif mode == 'word':
+        model_name = 'bert-base-uncased'
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
+        model = AutoModel.from_pretrained(model_name)
+
+        all_token_embeddings = []
+
+        for text in texts:
+            inputs = tokenizer(text, return_tensors="pt")
+            with torch.no_grad():
+                outputs = model(**inputs)
+            token_embeddings = outputs.last_hidden_state.squeeze(0)  # (seq_len, hidden_size)
+            tokens = tokenizer.convert_ids_to_tokens(inputs['input_ids'].squeeze(0))
+            token_vecs = [
+                (token, token_embeddings[idx].numpy()) for idx, token in enumerate(tokens)
+            ]
+            all_token_embeddings.append(token_vecs)
+
+        return all_token_embeddings, model
+
+    else:
+        raise ValueError("Invalid mode. Choose 'document' or 'word'.")
+
+def load_document_model(model_name: str = 'all-mpnet-base-v2') -> SentenceTransformer:
     """
-    Function loads embedding model from sentence_transformers.
+    Loads a sentence-transformers model suitable for document embeddings.
     """
-    model = SentenceTransformer(model_name)
-    return model
+    return SentenceTransformer(model_name)
