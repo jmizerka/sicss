@@ -48,7 +48,7 @@ def embed_texts(
     else:
         raise ValueError("Invalid mode. Choose 'document' or 'word'.")
 
-def load_document_model(model_name: str = 'all-mpnet-base-v2') -> SentenceTransformer:
+def load_document_model(model_name: str = 'multi-qa-mpnet-base-dot-v1') -> SentenceTransformer:
     """
     Loads a sentence-transformers model suitable for document embeddings.
     """
